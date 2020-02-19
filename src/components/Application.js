@@ -37,18 +37,29 @@ export default function Application(props) {
   }, [])
 
 
-  const schedule = appointments.map((appointment) => {
+  const schedule = appointments.map((appointment, i) => {
 
     const interview = getInterview(state, appointment.interview);
 
+    if (i === appointments.length - 1) {
+      return (
+        <Appointment
+          key="last"
+          time="5pm"
+          interview={interview ? interview : null}
+          {...appointment}
+          />
+      )
+      } else {
     return (
       <Appointment
-        key={appointment.key}
+        key={appointment.id}
         id={appointment.id}
         time={appointment.time}
         interview={interview}
+        {...appointment}
       />
-    )
+    )}
 
   })
 
@@ -77,26 +88,7 @@ export default function Application(props) {
 
       </section>
       <section className="schedule">
-        {appointments.map((element, i) => {
-
-          if (i === appointments.length - 1) {
-            return (
-              <Appointment
-                key="last"
-                time="5pm"
-                interview={props.interview ? props.interview : null}
-              />
-            )
-          } else {
-
-            return (
-              <Appointment
-                key={i}
-                {...element}
-              />
-            )
-          }
-        })}
+        {schedule}
       </section>
     </main>
   );
