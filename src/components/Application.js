@@ -16,10 +16,8 @@ export default function Application(props) {
     interviewers: {}
   })
   const setDay = day => setState({ ...state, day })
-  // const setDays = days => setState(prev => ({...prev, days}));
   const appointments = getAppointmentsForDay(state, state.day)
   const interviewers = getInterviewersForDay(state, state.day)
-
   useEffect(() => {
     Promise.all([
       Promise.resolve(
@@ -37,7 +35,6 @@ export default function Application(props) {
     });
   }, [])
 
-console.log(state)
   const schedule = appointments.map((appointment, i) => {
 
     const interview = getInterview(state, appointment.interview);
@@ -49,6 +46,8 @@ console.log(state)
           time="5pm"
           interviewers={interviewers}
           interview={interview ? interview : null}
+          bookInterview={bookInterview}
+
           {...appointment}
         />
       )
@@ -61,12 +60,40 @@ console.log(state)
           time={appointment.time}
           interview={interview}
           interviewers={interviewers}
+          bookInterview={bookInterview}
           {...appointment}
         />
       )
     }
 
   })
+
+  function bookInterview(id, interview) {
+    return new Promise((res, err) => {
+      const appointment = {
+        ...state.appointments[id],
+        interview: { ...interview }
+      };
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment
+      };
+
+
+      axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
+      .then((response) => {
+        res(response)
+      })
+      .catch((response) => {
+        err(response)
+      })
+      setState({ ...state, appointments })
+
+      console.log("End of bookInterview")
+    })
+  }
+
+
 
 
   return (

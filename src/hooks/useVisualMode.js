@@ -9,17 +9,17 @@ export default function useVisualMode(initMode) {
   function transition(newMode, replace=false) {
     setMode(() => newMode)
     if (Array.isArray(history)) {
-      if (!replace){
-      setHistory(() => [...history, newMode])
-      } else {
+      if (replace){
         setHistory(() => [...history.slice(0, -1), newMode])
+      } else {
+        setHistory(() => [...history, newMode])
       }
     } else {
       setHistory(() => [history, newMode])
     }
   }
 
-  function back() {
+  function back() { //Refactor this at some point
     // console.log("Back is called, history is ", history)
     if (history) {
       if (Array.isArray(history)) {

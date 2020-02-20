@@ -41,7 +41,6 @@ export function getInterviewersForDay(state, day){
   const dayArr = state.days.filter((element) => element.name === day)
 
   if (dayArr.length > 0) {
-    console.log(dayArr)
   
     dayArr[0].interviewers.forEach((x) => {
 
