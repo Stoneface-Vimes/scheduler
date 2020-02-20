@@ -16,7 +16,7 @@ export default function Appointment(props) {
 
   const { mode, transition, back } = useVisualMode(
 
-    props.interview ? SHOW : EMPTY
+    props.interview !== null ? SHOW : EMPTY
   );
 
 
@@ -34,6 +34,8 @@ export default function Appointment(props) {
     })
   }
 
+  console.log("props.interview: ", props.interview)
+  console.log("mode: ", mode)
   return (
 
     <article className="appointment">
@@ -43,7 +45,7 @@ export default function Appointment(props) {
 
        />
       )}
-      {mode === SHOW && (
+      {mode === SHOW && props.interview !== null && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}

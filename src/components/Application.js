@@ -47,7 +47,6 @@ export default function Application(props) {
           interviewers={interviewers}
           interview={interview ? interview : null}
           bookInterview={bookInterview}
-
           {...appointment}
         />
       )
@@ -69,7 +68,7 @@ export default function Application(props) {
   })
 
   function bookInterview(id, interview) {
-    return new Promise((res, err) => {
+
       const appointment = {
         ...state.appointments[id],
         interview: { ...interview }
@@ -79,18 +78,11 @@ export default function Application(props) {
         [id]: appointment
       };
 
-
-      axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
-      .then((response) => {
-        res(response)
-      })
-      .catch((response) => {
-        err(response)
-      })
       setState({ ...state, appointments })
 
-      console.log("End of bookInterview")
-    })
+      return axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
+
+
   }
 
 
