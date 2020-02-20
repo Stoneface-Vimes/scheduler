@@ -4,8 +4,7 @@ export default function useVisualMode(initMode) {
   const [mode, setMode] = useState(initMode)
   const [history, setHistory] = useState(initMode)
 
-  console.log("Visual mode called")
-  console.log(mode)
+
   let replace = false;
 
   function transition(newMode, replace=false) {

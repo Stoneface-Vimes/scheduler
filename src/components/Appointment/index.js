@@ -13,6 +13,7 @@ export default function Appointment(props) {
   const SHOW = "SHOW"
   const CREATE = "CREATE"
   const SAVING = "SAVING"
+  const DELETING = "DELETING"
 
   const { mode, transition, back } = useVisualMode(
 
@@ -21,48 +22,68 @@ export default function Appointment(props) {
 
 
   function save(name, interviewer) {
-    const interview = {
-      student: name,
-      interviewer
-    };
-    transition(SAVING)
+    if (name.length > 0 && interviewer !== null) {
+      const interview = {
+        student: name,
+        interviewer
+      };
+      transition(SAVING)
 
-    props.bookInterview(props.id, interview)
-    .then(() => {
-      console.log("Then triggering")
-      transition(SHOW)
-    })
+      props.bookInterview(props.id, interview)
+        .then(() => {
+          console.log("Then triggering")
+          transition(SHOW)
+        })
+    } else {
+      alert("Please enter a valid name and select an interviewer")
+    }
   }
 
-  console.log("props.interview: ", props.interview)
-  console.log("mode: ", mode)
+  function cancel(name, interviewer) {
+    const interview = null
+    transition(DELETING)
+
+    props.cancelInterview(props.id, interview)
+      .then(() => {
+        console.log("Then triggering")
+        transition(EMPTY)
+      })
+  }
+
+
   return (
 
     <article className="appointment">
       <Header time={props.time} />
       {mode === EMPTY && (<Empty
-       onAdd={() => transition(CREATE)} 
+        onAdd={() => transition(CREATE)}
 
-       />
+      />
       )}
       {mode === SHOW && props.interview !== null && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           interviewers={props.interviewers}
+          onDelete={cancel}
         />
       )}
       {mode === CREATE && (
         <Form
-        bookInterview={props.bookInterview}
-        onSave={save}
-        interviewers={props.interviewers}
-        onCancel={() => back()}
+          bookInterview={props.bookInterview}
+          onSave={save}
+          interviewers={props.interviewers}
+          onCancel={() => back()}
         />
       )}
       {mode === SAVING && (
         <Status
-        message={"Saving..."}
+          message={"Saving..."}
+        />
+      )}
+      {mode === DELETING && (
+        <Status
+          message={"Deleting..."}
         />
       )}
 
