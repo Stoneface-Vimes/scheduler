@@ -1,47 +1,32 @@
 import React, { useState } from "react"
 
-export default function useVisualMode(initMode) {
+export default function useVisualMode(initMode, replace = false) {
   const [mode, setMode] = useState(initMode)
-  const [history, setHistory] = useState(initMode)
+  const [history, setHistory] = useState([initMode])
 
 
-  let replace = false;
 
-  function transition(newMode, replace=false) {
+  function transition(newMode, replace) {
     setMode(() => newMode)
-    if (Array.isArray(history)) {
-      if (replace){
-        setHistory(() => [...history.slice(0, -1), newMode])
-      } else {
-        setHistory(() => [...history, newMode])
-      }
+    if (replace) {
+      setHistory((prev) => [...prev])
     } else {
-      setHistory(() => [history, newMode])
+      setHistory((prev) => [...prev, newMode])
     }
   }
 
-  function back() {//Refactor this at some point
+
+  const back = () => {//Refactor this at some point
     // console.log("Back is called, history is ", history)
     if (history) {
-      if (Array.isArray(history)) {
-        if (history.length > 1) {
-          const tempHistory = [...history]
-          tempHistory.pop()
-          setHistory(() => tempHistory)
-          setMode(() => tempHistory.slice(-1).toString())
-        } else {
-          setMode(() => history.toString())
-          setHistory(() => "")
-        } 
+      if (history.length > 1) {
+        setMode(((prev) => [...prev].slice(-2, -1)).toString())
+        setHistory((prev) => [...prev].slice(0, -1))
       } else {
-        // console.log("HIstory is not an array, it's value is ", history)
-        setMode(() => history)
-        // console.log(mode)
-        setHistory(() => "")
-        // console.log(history)
-      }
+      } setMode(initMode)
     }
   }
+
 
   return { mode, transition, back, replace }
 }

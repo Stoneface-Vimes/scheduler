@@ -25,16 +25,16 @@ export default function Application(props) {
       ),
       Promise.resolve(
         axios.get("http://localhost:8001/api/appointments")
-        ),
-        Promise.resolve(
-          axios.get("http://localhost:8001/api/interviewers")
-          )
+      ),
+      Promise.resolve(
+        axios.get("http://localhost:8001/api/interviewers")
+      )
     ]).then((all) => {
       setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
-      
+
     });
   }, [])
-  
+
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -44,12 +44,14 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    setState({ ...state, appointments })
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { interview })
+      .then(() => {
+        setState({ ...state, appointments })
+      })
+
   }
 
   function cancelInterview(id, interview) {
-    console.log("Cancel Interview called")
     const appointment = {
       ...state.appointments[id],
       interview: null
@@ -60,10 +62,11 @@ export default function Application(props) {
     };
 
     delete appointments.id
-    
-    setState({ ...state, appointments })
-    console.log("Axios put sent")
+
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
+      .then(() => {
+        setState({ ...state, appointments })
+      })
   }
 
   const schedule = appointments.map((appointment, i) => {
