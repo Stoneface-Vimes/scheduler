@@ -16,8 +16,7 @@ export default function useVisualMode(initMode, replace = false) {
   }
 
 
-  const back = () => {//Refactor this at some point
-    // console.log("Back is called, history is ", history)
+  const back = () => {
     if (history) {
       if (history.length > 1) {
         setMode(((prev) => [...prev].slice(-2, -1)).toString())
