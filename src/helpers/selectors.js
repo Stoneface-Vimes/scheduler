@@ -37,7 +37,6 @@ export function getInterview(state, interview) {
 }
 
 export function getInterviewersForDay(state, day){
-  console.log(state.appointments)
   const interviewerArr = [];
   const dayArr = state.days.filter((element) => element.name === day)
   
