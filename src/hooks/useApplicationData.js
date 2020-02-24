@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios"
 
 const SET_DAY = "SET_DAY"
@@ -25,13 +25,13 @@ function reducer(state, action) {
     case REMOVE_SPOT:
       newDays[action.day].spots--
       return {
-        ...state, 
+        ...state,
         days: newDays
       }
     case ADD_SPOT:
       newDays[action.day].spots++
       return {
-        ...state, 
+        ...state,
         days: newDays
       }
     default:
@@ -84,7 +84,7 @@ export default function useApplicationData(props) {
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then(() => {
         dispatch({ type: SET_INTERVIEW, value: appointments })
-        dispatch({ type: REMOVE_SPOT, day: day.id})
+        dispatch({ type: REMOVE_SPOT, day: day })
       })
 
 
@@ -106,21 +106,11 @@ export default function useApplicationData(props) {
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
       .then(() => {
         Promise.resolve(
-          dispatch({ type: SET_INTERVIEW, value: appointments })
+          dispatch({ type: SET_INTERVIEW, value: appointments }),
+          dispatch({ type: ADD_SPOT, day: day })
         )
-          .then(() => {
-            dispatch({ type: ADD_SPOT, day: day.id })
-          })
       })
   }
-
-  // function theSpots(givenDay) {
-  //   console.log(state)
-  //   const newSpots = state.days.filter(appointment => appointment.day === givenDay && appointment.interview)
-  //   console.log("new spots: ", newSpots.length)
-  //   return newSpots.length
-  // }
-
 
   return {
     state,
