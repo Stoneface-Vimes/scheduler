@@ -35,7 +35,7 @@ export default function Appointment(props) {
       };
       transition(SAVING)
 
-      props.bookInterview(props.id, interview)
+      props.bookInterview(props.id, interview, props.day)
         .then(() => {
           transition(SHOW)
         })
@@ -55,7 +55,7 @@ export default function Appointment(props) {
     const interview = null
     transition(DELETING)
 
-    props.cancelInterview(props.id, interview)
+    props.cancelInterview(props.id, interview, props.day)
       .then(() => {
         transition(EMPTY)
       })
