@@ -18,6 +18,7 @@ const interviewers = getInterviewersForDay(state, state.day);
 const appointments = getAppointmentsForDay(state, state.day)
   const schedule = appointments.map((appointment, i) => {
 
+    // Sets day equal to the index number of the relevant days element
     const day = Math.floor((appointment.id - 1) / 5)
 
     const interview = getInterview(state, appointment.interview);
