@@ -8,7 +8,7 @@ export default function useVisualMode(initMode, replace = false) {
 
   function transition(newMode, replace) {
     setMode(() => newMode)
-    if (replace) {
+    if (replace === true) {
       setHistory((prev) => [...prev])
     } else {
       setHistory((prev) => [...prev, newMode])
@@ -16,13 +16,15 @@ export default function useVisualMode(initMode, replace = false) {
   }
 
 
-  const back = () => {
+  function back() {
     if (history) {
       if (history.length > 1) {
-        setMode(((prev) => [...prev].slice(-2, -1)).toString())
         setHistory((prev) => [...prev].slice(0, -1))
+        let temp = ([...history].slice(-2, -1)).toString()
+        setMode(() => temp)
       } else {
-      } setMode(initMode)
+        setMode(() => initMode)
+      }
     }
   }
 

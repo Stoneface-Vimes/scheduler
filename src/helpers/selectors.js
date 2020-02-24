@@ -37,12 +37,13 @@ export function getInterview(state, interview) {
 }
 
 export function getInterviewersForDay(state, day){
-  console.log("getInterviewersForDay state :", state)
+  console.log(state.appointments)
   const interviewerArr = [];
   const dayArr = state.days.filter((element) => element.name === day)
-
-  if (dayArr.length > 0) {
   
+  if (dayArr.length > 0) {
+    console.log("dayArr :", dayArr)
+
     dayArr[0].interviewers.forEach((x) => {
 
       if (state.interviewers[x]) {
