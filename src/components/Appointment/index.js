@@ -42,7 +42,7 @@ export default function Appointment(props) {
           transition(ERROR_SAVE, true)
         })
     } else {
-      alert("Please enter a valid name and select an interviewer")
+      // alert("Please enter a valid name and select an interviewer")
     }
   }
 
