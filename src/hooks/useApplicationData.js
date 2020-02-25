@@ -72,7 +72,8 @@ export default function useApplicationData(props) {
 
   const setDay = day => dispatch({ type: SET_DAY, value: day })
 
-  function bookInterview(id, interview, day) {
+  function bookInterview(id, interview) {
+    const day = Math.floor((id - 1) / 5)
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -90,7 +91,8 @@ export default function useApplicationData(props) {
 
   }
 
-  function cancelInterview(id, interview, day) {
+  function cancelInterview(id) {
+    const day = Math.floor((id - 1) / 5)
 
     const appointment = {
       ...state.appointments[id],

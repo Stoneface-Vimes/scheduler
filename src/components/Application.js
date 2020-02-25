@@ -19,7 +19,6 @@ const appointments = getAppointmentsForDay(state, state.day)
   const schedule = appointments.map((appointment, i) => {
 
     // Sets day equal to the index number of the relevant days element
-    const day = Math.floor((appointment.id - 1) / 5)
 
     const interview = getInterview(state, appointment.interview);
 
@@ -28,7 +27,6 @@ const appointments = getAppointmentsForDay(state, state.day)
         <Appointment
           key="last"
           time="5pm"
-          day={day}
           interviewers={interviewers}
           interview={interview ? interview : null}
           bookInterview={bookInterview}
@@ -42,7 +40,6 @@ const appointments = getAppointmentsForDay(state, state.day)
 
           key={appointment.id}
           id={appointment.id}
-          day={day}
           time={appointment.time}
           interview={interview}
           interviewers={interviewers}
