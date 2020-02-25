@@ -27,6 +27,7 @@ export default function Appointment(props) {
   );
 
   function save(name, interviewer) {
+    const modifySpots = mode === CREATE ? true : false
     if (name.length > 0 && interviewer !== null) {
       const interview = {
         student: name,
@@ -34,7 +35,7 @@ export default function Appointment(props) {
       };
       transition(SAVING)
 
-      props.bookInterview(props.id, interview)
+      props.bookInterview(props.id, interview, modifySpots)
         .then(() => {
           transition(SHOW)
         })

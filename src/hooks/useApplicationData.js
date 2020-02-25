@@ -1,45 +1,16 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios"
+import reducer, {
+  SET_DAY,
+  SET_APPPLICATION_DATA,
+  SET_INTERVIEW,
+  ADD_SPOT,
+  REMOVE_SPOT
+} from "../reducers/application.js"
 
-const SET_DAY = "SET_DAY"
-const SET_APPPLICATION_DATA = "SET_APPLICATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW"
-const REMOVE_SPOT = "REMOVE_SPOT"
-const ADD_SPOT = "ADD_SPOT"
 
-function reducer(state, action) {
-  const newDays = state.days
-  switch (action.type) {
-    case SET_DAY:
-      return {
-        ...state, day: action.value
-      }
-    case SET_APPPLICATION_DATA:
-      return {
-        ...state, days: action.value[0].data, appointments: action.value[1].data, interviewers: action.value[2].data
-      }
-    case SET_INTERVIEW:
-      return {
-        ...state, appointments: action.value
-      }
-    case REMOVE_SPOT:
-      newDays[action.day].spots--
-      return {
-        ...state,
-        days: newDays
-      }
-    case ADD_SPOT:
-      newDays[action.day].spots++
-      return {
-        ...state,
-        days: newDays
-      }
-    default:
-      throw new Error(
-        `Tried to reduce with unsupported action type: ${action.type}`
-      )
-  }
-}
+
+
 
 export default function useApplicationData(props) {
 
@@ -72,7 +43,7 @@ export default function useApplicationData(props) {
 
   const setDay = day => dispatch({ type: SET_DAY, value: day })
 
-  function bookInterview(id, interview) {
+  function bookInterview(id, interview, modifySpots) {
     const day = Math.floor((id - 1) / 5)
     const appointment = {
       ...state.appointments[id],
@@ -85,7 +56,9 @@ export default function useApplicationData(props) {
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then(() => {
         dispatch({ type: SET_INTERVIEW, value: appointments })
-        dispatch({ type: REMOVE_SPOT, day: day })
+        if (modifySpots) {
+          dispatch({ type: REMOVE_SPOT, day: day })
+        }
       })
 
 
