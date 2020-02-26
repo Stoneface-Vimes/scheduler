@@ -18,16 +18,17 @@ export default function Appointment(props) {
   const DELETING = "DELETING"
   const CONFIRM = "CONFIRM"
   const EDIT = "EDIT"
-  const ERROR = "ERROR"
   const ERROR_SAVE = "ERROR_SAVE"
   const ERROR_DELETE = "ERROR_DELETE"
 
   const { mode, transition, back } = useVisualMode(
 
-    props.interview !== null ? SHOW : EMPTY
+    props.interview ? SHOW : EMPTY
+    
   );
 
   function save(name, interviewer) {
+    const modifySpots = mode === CREATE ? true : false
     if (name.length > 0 && interviewer !== null) {
       const interview = {
         student: name,
@@ -35,7 +36,7 @@ export default function Appointment(props) {
       };
       transition(SAVING)
 
-      props.bookInterview(props.id, interview)
+      props.bookInterview(props.id, interview, modifySpots)
         .then(() => {
           transition(SHOW)
         })
@@ -43,7 +44,7 @@ export default function Appointment(props) {
           transition(ERROR_SAVE, true)
         })
     } else {
-      alert("Please enter a valid name and select an interviewer")
+      // alert("Please enter a valid name and select an interviewer")
     }
   }
 
@@ -51,11 +52,10 @@ export default function Appointment(props) {
     transition(CONFIRM)
   }
 
-  function confirmCancel(name, interviewer) {
-    const interview = null
+  function confirmCancel() {
     transition(DELETING)
 
-    props.cancelInterview(props.id, interview)
+    props.cancelInterview(props.id)
       .then(() => {
         transition(EMPTY)
       })
@@ -71,7 +71,8 @@ export default function Appointment(props) {
 
   return (
 
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment"
+    >
       <Header time={props.time} />
       {mode === EMPTY && (<Empty
         onAdd={() => transition(CREATE)}
