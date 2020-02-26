@@ -23,7 +23,8 @@ export default function Appointment(props) {
 
   const { mode, transition, back } = useVisualMode(
 
-    props.interview !== null ? SHOW : EMPTY
+    props.interview ? SHOW : EMPTY
+    
   );
 
   function save(name, interviewer) {
