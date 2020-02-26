@@ -8,9 +8,7 @@ export default function DayList(props) {
   let newArr = props.days.map( (day) => {
     
     return (
-      //This calls the function
     <DayListItem
-    //These are the variables for the called function
     key={day.id}
     name={day.name}
     spots={day.spots}
