@@ -1,11 +1,10 @@
 import React from "react";
 import "components/InterviewerList.scss";
 import InterviewerListItem from "components/InterviewerListItem"
+import PropTypes from "prop-types"
+export default function InterviewerList(props) {
 
-export default function DayListItem(props) {
-
-  let newArr = props.interviewers.map((int) => {
-
+  let newArr = props.interviewers.map((int) => {    
     return (
       <InterviewerListItem
         key={int.id}
@@ -19,17 +18,17 @@ export default function DayListItem(props) {
   })
 
   return (
-
-
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
       <ul
         className="interviewers__list">
         {newArr}
       </ul>
-      
     </section>
-
   )
-
 }
+
+InterviewerList.propTypes = {
+  interviewer: PropTypes.number,
+  setInterviewer: PropTypes.func.isRequired
+};

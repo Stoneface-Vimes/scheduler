@@ -18,44 +18,41 @@ export default function Appointment(props) {
   const DELETING = "DELETING"
   const CONFIRM = "CONFIRM"
   const EDIT = "EDIT"
-  const ERROR = "ERROR"
   const ERROR_SAVE = "ERROR_SAVE"
   const ERROR_DELETE = "ERROR_DELETE"
 
   const { mode, transition, back } = useVisualMode(
-
-    props.interview !== null ? SHOW : EMPTY
+    //If no interview is set for an appointment, defaults that appointment to SHOW
+    props.interview ? SHOW : EMPTY
+    
   );
 
   function save(name, interviewer) {
-    if (name.length > 0 && interviewer !== null) {
+    //Only modify the number of spots displayed if the client is creating an appointment
+    const modifySpots = mode === CREATE ? true : false
       const interview = {
         student: name,
         interviewer
       };
       transition(SAVING)
 
-      props.bookInterview(props.id, interview)
+      props.bookInterview(props.id, interview, modifySpots)
         .then(() => {
           transition(SHOW)
         })
         .catch(() => {
           transition(ERROR_SAVE, true)
         })
-    } else {
-      alert("Please enter a valid name and select an interviewer")
-    }
   }
 
-  function cancel(name, interviewer) {
+  function cancel() {
     transition(CONFIRM)
   }
 
-  function confirmCancel(name, interviewer) {
-    const interview = null
+  function confirmCancel() {
     transition(DELETING)
 
-    props.cancelInterview(props.id, interview)
+    props.cancelInterview(props.id)
       .then(() => {
         transition(EMPTY)
       })
@@ -71,14 +68,15 @@ export default function Appointment(props) {
 
   return (
 
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment"
+    >
       <Header time={props.time} />
       {mode === EMPTY && (<Empty
         onAdd={() => transition(CREATE)}
 
       />
       )}
-      {mode === SHOW && props.interview !== null && (
+      {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
