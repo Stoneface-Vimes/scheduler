@@ -8,11 +8,7 @@ import reducer, {
   REMOVE_SPOT
 } from "../reducers/application.js"
 
-
-
-
-
-export default function useApplicationData(props) {
+export default function useApplicationData() {
 
   const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
@@ -21,7 +17,7 @@ export default function useApplicationData(props) {
     interviewers: {}
   })
 
-
+  //Handles fetching the api data from the server
   useEffect(() => {
     Promise.all([
       Promise.resolve(
@@ -43,8 +39,8 @@ export default function useApplicationData(props) {
 
   const setDay = day => dispatch({ type: SET_DAY, value: day })
 
+  //If modify spots is truthy the displayed number of spots will be updated
   function bookInterview(id, interview, modifySpots) {
-    const day = Math.floor((id - 1) / 5)
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -57,11 +53,12 @@ export default function useApplicationData(props) {
       .then(() => {
         dispatch({ type: SET_INTERVIEW, value: appointments })
         if (modifySpots) {
+          //Since each appointment id is unique and only show up in a specific day, this logic finds the array position of said day
+          //in state.days of the passed appointment id
+          const day = Math.floor((id - 1) / 5)
           dispatch({ type: REMOVE_SPOT, day: day })
         }
       })
-
-
   }
 
   function cancelInterview(id) {

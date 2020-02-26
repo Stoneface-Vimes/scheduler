@@ -2,6 +2,7 @@ import React from "react"
 
 export default function Show(props) {
 
+  //Ensures the proper interviewer name is displayed from the list of passed interviewers
   let interviewerName = (props.interviewers.filter( i => i.id === props.interviewer))[0];
   return (
     <main className="appointment__card appointment__card--show">

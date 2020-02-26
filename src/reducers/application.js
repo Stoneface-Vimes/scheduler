@@ -1,5 +1,3 @@
-import React from "react"
-
 const SET_DAY = "SET_DAY"
 const SET_APPPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW"
@@ -25,11 +23,14 @@ export default function reducer(state, action) {
     case REMOVE_SPOT:
       return {
         ...state,
+        //Creates a copy of the value to replace and sets it to our local state
         days: state.days.map((day, i) => i === action.day ? { ...day, spots: day.spots - 1 } : day)
       }
     case ADD_SPOT:
       return {
         ...state,
+        //Creates a copy of the value to replace and sets it to our local state
+
         days: state.days.map((day, i) => i === action.day ? { ...day, spots: day.spots + 1 } : day)
       }
     default:

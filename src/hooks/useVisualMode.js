@@ -5,7 +5,8 @@ export default function useVisualMode(initMode, replace = false) {
   const [history, setHistory] = useState([initMode])
 
 
-
+  //Replace is true when the client navigates to a viewMode we don't want
+  //to travel back to (ie, error displays) 
   function transition(newMode, replace) {
     setMode(() => newMode)
     if (replace === true) {

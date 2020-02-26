@@ -30,7 +30,6 @@ export default function Appointment(props) {
   function save(name, interviewer) {
     //Only modify the number of spots displayed if the client is creating an appointment
     const modifySpots = mode === CREATE ? true : false
-    if (name.length > 0 && interviewer !== null) {
       const interview = {
         student: name,
         interviewer
@@ -44,12 +43,9 @@ export default function Appointment(props) {
         .catch(() => {
           transition(ERROR_SAVE, true)
         })
-    } else {
-      // alert("Please enter a valid name and select an interviewer")
-    }
   }
 
-  function cancel(name, interviewer) {
+  function cancel() {
     transition(CONFIRM)
   }
 
@@ -80,7 +76,7 @@ export default function Appointment(props) {
 
       />
       )}
-      {mode === SHOW && props.interview !== null && (
+      {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
