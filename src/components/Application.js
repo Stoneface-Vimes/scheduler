@@ -7,6 +7,8 @@ import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../h
 import useApplicationData from "../hooks/useApplicationData"
 export default function Application(props) {
 
+
+  //Offloads managing state to an imported hook
   const {
     state,
     setDay,
@@ -14,9 +16,11 @@ export default function Application(props) {
     cancelInterview
   } = useApplicationData();
 
+  //Calls helper functions for variables that will be used to populate the appointments for each day
   const interviewers = getInterviewersForDay(state, state.day);
   const appointments = getAppointmentsForDay(state, state.day)
   
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -42,8 +46,10 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {appointments.map((appointment, i) => {
-
+          // This map function will populate the appointment cards using appoinments stored in an api server
+          
           const interview = getInterview(state, appointment.interview);
+          //If an interview is scheduled for an appointment, interview !== null
 
           return (
             <Appointment
@@ -60,6 +66,7 @@ export default function Application(props) {
 
         })}
         {
+          //Sets the last interview for each day
         <Appointment key="last" time="5pm" />
 
         }

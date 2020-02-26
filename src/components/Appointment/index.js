@@ -22,12 +22,13 @@ export default function Appointment(props) {
   const ERROR_DELETE = "ERROR_DELETE"
 
   const { mode, transition, back } = useVisualMode(
-
+    //If no interview is set for an appointment, defaults that appointment to SHOW
     props.interview ? SHOW : EMPTY
     
   );
 
   function save(name, interviewer) {
+    //Only modify the number of spots displayed if the client is creating an appointment
     const modifySpots = mode === CREATE ? true : false
     if (name.length > 0 && interviewer !== null) {
       const interview = {
