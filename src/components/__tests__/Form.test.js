@@ -47,7 +47,7 @@ describe("Form", () => {
     expect(onSave).not.toHaveBeenCalled();
   });
 
-  it("validates that the an interviewer was selected", () => {
+  it("validates that it doesn't save when no interviewer was selected", () => {
 
     const onSave = jest.fn()
 
